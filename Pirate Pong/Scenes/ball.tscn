@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://cg63hp3ibc86g"]
+
+[ext_resource type="Script" uid="uid://71enw8jhiq8s" path="res://Scripts/ball.gd" id="1_d60mj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_25osk"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_d60mj"]
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+script = ExtResource("1_d60mj")
+speed = 300.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_25osk")
+
+[node name="Sprite2D" type="Sprite2D" parent="CollisionShape2D"]
+scale = Vector2(20, 20)
+texture = SubResource("CanvasTexture_d60mj")

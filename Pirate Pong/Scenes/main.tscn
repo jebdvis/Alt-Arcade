@@ -1,0 +1,62 @@
+[gd_scene load_steps=6 format=3 uid="uid://d2a21ksdhnv0o"]
+
+[ext_resource type="PackedScene" uid="uid://drxk6twynvxhf" path="res://Scenes/paddle.tscn" id="1_jjgbg"]
+[ext_resource type="Script" uid="uid://dy78leeojc8vp" path="res://Scripts/sidewall.gd" id="2_8gbba"]
+[ext_resource type="PackedScene" uid="uid://cg63hp3ibc86g" path="res://Scenes/ball.tscn" id="2_bo1nx"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jjgbg"]
+size = Vector2(1920, 10)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bo1nx"]
+size = Vector2(10, 1080)
+
+[node name="Main" type="Node2D"]
+
+[node name="Paddle" parent="." instance=ExtResource("1_jjgbg")]
+position = Vector2(96, 538)
+disable_mode = 1
+speed = 500.0
+
+[node name="Paddle2" parent="." instance=ExtResource("1_jjgbg")]
+position = Vector2(1800, 540)
+disable_mode = 1
+controls = 1
+speed = 500.0
+
+[node name="TopWall" type="StaticBody2D" parent="."]
+position = Vector2(960, 0)
+disable_mode = 1
+script = ExtResource("2_8gbba")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TopWall"]
+position = Vector2(0, -5)
+shape = SubResource("RectangleShape2D_jjgbg")
+
+[node name="RightWall" type="StaticBody2D" parent="."]
+position = Vector2(1925, 545)
+disable_mode = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
+position = Vector2(0, -5)
+shape = SubResource("RectangleShape2D_bo1nx")
+
+[node name="LeftWall" type="StaticBody2D" parent="."]
+position = Vector2(-5, 545)
+disable_mode = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
+position = Vector2(0, -5)
+shape = SubResource("RectangleShape2D_bo1nx")
+
+[node name="BottomWall" type="StaticBody2D" parent="."]
+position = Vector2(960, 1090)
+disable_mode = 1
+script = ExtResource("2_8gbba")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BottomWall"]
+position = Vector2(0, -5)
+shape = SubResource("RectangleShape2D_jjgbg")
+
+[node name="CharacterBody2D" parent="." instance=ExtResource("2_bo1nx")]
+position = Vector2(960, 540)
+speed = 800.0
