@@ -1,8 +1,22 @@
-[gd_scene load_steps=6 format=3 uid="uid://d2a21ksdhnv0o"]
+[gd_scene load_steps=13 format=3 uid="uid://d2a21ksdhnv0o"]
 
 [ext_resource type="PackedScene" uid="uid://drxk6twynvxhf" path="res://Scenes/paddle.tscn" id="1_jjgbg"]
+[ext_resource type="Script" uid="uid://q6gpb7r6v1n" path="res://Scripts/main.gd" id="1_jjvhh"]
 [ext_resource type="Script" uid="uid://dy78leeojc8vp" path="res://Scripts/sidewall.gd" id="2_8gbba"]
 [ext_resource type="PackedScene" uid="uid://cg63hp3ibc86g" path="res://Scenes/ball.tscn" id="2_bo1nx"]
+[ext_resource type="FontFile" uid="uid://d00dkp3ispkku" path="res://Sono-Regular.ttf" id="5_kry3j"]
+[ext_resource type="Shader" uid="uid://bu5psiptg1ckm" path="res://water.gdshader" id="6_21xkr"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6bp64"]
+shader = ExtResource("6_21xkr")
+shader_parameter/WATER_COL = Color(0.176471, 0.635294, 0.85098, 1)
+shader_parameter/WATER2_COL = Color(0.0588235, 0.529412, 0.776471, 1)
+shader_parameter/FOAM_COL = Color(0.87451, 0.988235, 1, 1)
+shader_parameter/distortion_speed = 2.0
+shader_parameter/tile = Vector2(5, 5)
+shader_parameter/offset = Vector2(0, 0)
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_344ge"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jjgbg"]
 size = Vector2(1920, 10)
@@ -10,15 +24,39 @@ size = Vector2(1920, 10)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bo1nx"]
 size = Vector2(10, 1080)
 
-[node name="Main" type="Node2D"]
+[sub_resource type="LabelSettings" id="LabelSettings_21xkr"]
+font = ExtResource("5_kry3j")
+font_size = 48
+
+[sub_resource type="LabelSettings" id="LabelSettings_6bp64"]
+font = ExtResource("5_kry3j")
+font_size = 48
+
+[node name="Main" type="Node2D" node_paths=PackedStringArray("timer")]
+script = ExtResource("1_jjvhh")
+timer = NodePath("Timer")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = -1
+scale = Vector2(2, 2)
+transform = Transform2D(2, 0, 0, 2, 0, 0)
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_6bp64")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("CanvasTexture_344ge")
 
 [node name="Paddle" parent="." instance=ExtResource("1_jjgbg")]
-position = Vector2(96, 538)
+position = Vector2(110, 540)
 disable_mode = 1
 speed = 500.0
 
 [node name="Paddle2" parent="." instance=ExtResource("1_jjgbg")]
-position = Vector2(1800, 540)
+position = Vector2(1810, 540)
 disable_mode = 1
 controls = 1
 speed = 500.0
@@ -57,6 +95,28 @@ script = ExtResource("2_8gbba")
 position = Vector2(0, -5)
 shape = SubResource("RectangleShape2D_jjgbg")
 
-[node name="CharacterBody2D" parent="." instance=ExtResource("2_bo1nx")]
+[node name="Ball" parent="." instance=ExtResource("2_bo1nx")]
 position = Vector2(960, 540)
 speed = 800.0
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[node name="LeftScore" type="Label" parent="."]
+offset_left = 467.0
+offset_top = 86.0
+offset_right = 507.0
+offset_bottom = 111.0
+text = "0"
+label_settings = SubResource("LabelSettings_21xkr")
+
+[node name="RightScore" type="Label" parent="."]
+offset_left = 1425.0
+offset_top = 99.0
+offset_right = 1465.0
+offset_bottom = 124.0
+text = "0"
+label_settings = SubResource("LabelSettings_6bp64")
+
+[connection signal="pointScored" from="Ball" to="." method="_on_ball_point_scored"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

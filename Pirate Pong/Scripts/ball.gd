@@ -1,25 +1,31 @@
-extends CharacterBody2D
+extends RigidBody2D
 class_name Ball
 
 @export var speed:float
-var oldVel:Vector2
+
+signal pointScored(side)
+
+var moveVector:Vector2
 
 func _ready():
-	velocity = Vector2(1,0) * speed
+	$"../Timer".start()
 
 func _physics_process(delta):
-	var newVelocity = velocity
-	if self.get_slide_collision_count() > 0:
-		var collision = self.get_slide_collision(0)
-		if collision.get_collider() is CharacterBody2D:
-			var colPos = collision.get_position()
-			var otherPos = collision.get_collider().get_position()
-			newVelocity = speed * Vector2(cos(deg_to_rad(65*(colPos[1]-otherPos[1])/60)),sin(deg_to_rad(65*(colPos[1]-otherPos[1])/60)))
-			if position[0] > 540:
-				newVelocity = Vector2(newVelocity[0]*-1,newVelocity[1])
-		elif collision.get_collider() is TopWall:
-			newVelocity = oldVel.bounce(collision.get_normal())
-	oldVel = velocity
-	velocity = newVelocity
-	move_and_slide()
-	
+	if $"..".running:
+		var collision = move_and_collide(speed * moveVector * delta)
+		var newVector:Vector2 = moveVector
+		if collision:
+			if collision.get_collider() is CharacterBody2D:
+				var colPos = collision.get_position()
+				var otherPos = collision.get_collider().get_position()
+				newVector = Vector2(cos(deg_to_rad(65*(colPos[1]-otherPos[1])/60)),sin(deg_to_rad(65*(colPos[1]-otherPos[1])/60)))
+				if position[0] > 540:
+					newVector = Vector2(newVector[0]*-1,newVector[1])
+			elif collision.get_collider() is TopWall:
+				newVector = moveVector.bounce(collision.get_normal())
+			else:
+				if collision.get_position().x < 960:
+					pointScored.emit("left")
+				else:
+					pointScored.emit("right")
+		moveVector = newVector	

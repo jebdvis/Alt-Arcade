@@ -6,9 +6,10 @@
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_d60mj"]
 
-[node name="CharacterBody2D" type="CharacterBody2D"]
+[node name="CharacterBody2D" type="RigidBody2D"]
+gravity_scale = 0.0
 script = ExtResource("1_d60mj")
-speed = 300.0
+speed = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_25osk")
