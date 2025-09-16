@@ -5,6 +5,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_25osk"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_d60mj"]
+specular_color = Color(0, 0, 0, 1)
 
 [node name="CharacterBody2D" type="RigidBody2D"]
 gravity_scale = 0.0
@@ -15,5 +16,6 @@ speed = 1.0
 shape = SubResource("RectangleShape2D_25osk")
 
 [node name="Sprite2D" type="Sprite2D" parent="CollisionShape2D"]
+modulate = Color(0, 0, 0, 1)
 scale = Vector2(20, 20)
 texture = SubResource("CanvasTexture_d60mj")

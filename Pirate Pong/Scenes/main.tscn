@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://d2a21ksdhnv0o"]
+[gd_scene load_steps=17 format=3 uid="uid://d2a21ksdhnv0o"]
 
 [ext_resource type="PackedScene" uid="uid://drxk6twynvxhf" path="res://Scenes/paddle.tscn" id="1_jjgbg"]
 [ext_resource type="Script" uid="uid://q6gpb7r6v1n" path="res://Scripts/main.gd" id="1_jjvhh"]
@@ -6,6 +6,10 @@
 [ext_resource type="PackedScene" uid="uid://cg63hp3ibc86g" path="res://Scenes/ball.tscn" id="2_bo1nx"]
 [ext_resource type="FontFile" uid="uid://d00dkp3ispkku" path="res://Sono-Regular.ttf" id="5_kry3j"]
 [ext_resource type="Shader" uid="uid://bu5psiptg1ckm" path="res://water.gdshader" id="6_21xkr"]
+[ext_resource type="AudioStream" uid="uid://camgr5i8wh0uq" path="res://Assets/dread-pirate-roberts-sea-shanty-dance-edm-soundtrack-153022.mp3" id="7_6bp64"]
+[ext_resource type="AudioStream" uid="uid://b1up1lgtk6xgu" path="res://Assets/wooden-ship-interior-ambience-3min-loop-361505.mp3" id="8_344ge"]
+[ext_resource type="AudioStream" uid="uid://b4vxfhqrnhmsj" path="res://Assets/ship-bell-two-chimes-102730.mp3" id="8_hptm8"]
+[ext_resource type="AudioStream" uid="uid://b25ik2jc128q7" path="res://Assets/hit_sounds.tres" id="10_hptm8"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6bp64"]
 shader = ExtResource("6_21xkr")
@@ -27,10 +31,12 @@ size = Vector2(10, 1080)
 [sub_resource type="LabelSettings" id="LabelSettings_21xkr"]
 font = ExtResource("5_kry3j")
 font_size = 48
+font_color = Color(0, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_6bp64"]
 font = ExtResource("5_kry3j")
 font_size = 48
+font_color = Color(0, 0, 0, 1)
 
 [node name="Main" type="Node2D" node_paths=PackedStringArray("timer")]
 script = ExtResource("1_jjvhh")
@@ -46,6 +52,10 @@ material = SubResource("ShaderMaterial_6bp64")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 1.0
+offset_top = 0.5
+offset_right = -959.0
+offset_bottom = -539.5
 grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("CanvasTexture_344ge")
@@ -53,13 +63,14 @@ texture = SubResource("CanvasTexture_344ge")
 [node name="Paddle" parent="." instance=ExtResource("1_jjgbg")]
 position = Vector2(110, 540)
 disable_mode = 1
-speed = 500.0
+controls = 2
+speed = 150.0
 
 [node name="Paddle2" parent="." instance=ExtResource("1_jjgbg")]
 position = Vector2(1810, 540)
 disable_mode = 1
 controls = 1
-speed = 500.0
+speed = 200.0
 
 [node name="TopWall" type="StaticBody2D" parent="."]
 position = Vector2(960, 0)
@@ -97,7 +108,7 @@ shape = SubResource("RectangleShape2D_jjgbg")
 
 [node name="Ball" parent="." instance=ExtResource("2_bo1nx")]
 position = Vector2(960, 540)
-speed = 800.0
+speed = 400.0
 
 [node name="Timer" type="Timer" parent="."]
 one_shot = true
@@ -117,6 +128,23 @@ offset_right = 1465.0
 offset_bottom = 124.0
 text = "0"
 label_settings = SubResource("LabelSettings_6bp64")
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_6bp64")
+volume_db = -5.0
+autoplay = true
+bus = &"Background Music"
+
+[node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_hptm8")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_344ge")
+volume_db = 9.267
+autoplay = true
+
+[node name="AudioStreamPlayer3" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_hptm8")
 
 [connection signal="pointScored" from="Ball" to="." method="_on_ball_point_scored"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

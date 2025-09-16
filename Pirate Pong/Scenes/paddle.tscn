@@ -9,6 +9,8 @@ size = Vector2(30, 120)
 [node name="Paddle" type="CharacterBody2D"]
 scale = Vector2(1.5, 1.5)
 script = ExtResource("1_0sbc1")
+controls = null
+speed = null
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_ut3sq")
